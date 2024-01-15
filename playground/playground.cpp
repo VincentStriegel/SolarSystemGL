@@ -104,17 +104,17 @@ int main(void)
 	std::vector<glm::vec3> verticesMer;
 	std::vector<glm::vec2> uvsMer;
 	std::vector<glm::vec3> normalsMer; // Won't be used at the moment.
-	bool resMer = loadOBJ("sphere.obj", verticesMer, uvsMer, normalsMer); // Assume "second_sphere.obj" is your second sphere model
+	bool resMer = loadOBJ("sphere.obj", verticesMer, uvsMer, normalsMer); 
 
 	std::vector<glm::vec3> verticesVen;
 	std::vector<glm::vec2> uvsVen;
 	std::vector<glm::vec3> normalsVen; // Won't be used at the moment.
-	bool resVen = loadOBJ("sphere.obj", verticesVen, uvsVen, normalsVen); // Assume "second_sphere.obj" is your second sphere model
+	bool resVen = loadOBJ("sphere.obj", verticesVen, uvsVen, normalsVen); 
 
 	std::vector<glm::vec3> verticesEar;
 	std::vector<glm::vec2> uvsEar;
 	std::vector<glm::vec3> normalsEar; // Won't be used at the moment.
-	bool resEar = loadOBJ("sphere.obj", verticesEar, uvsEar, normalsEar); // Assume "second_sphere.obj" is your second sphere model
+	bool resEar = loadOBJ("sphere.obj", verticesEar, uvsEar, normalsEar);
 
 	// Load it into a VBO
 
@@ -149,28 +149,27 @@ int main(void)
 	float orbitAngle = 0.0f; // Initial angle
 
 	float rotationAngle = 0.0f;
-	float rotationSpeed = 0.01f; // Adjust as needed
+	float rotationSpeed = 0.01f; 
 
 
 	float rotationAngleMer = 0.0f;
-	float rotationSpeedMer = 0.01f; // Adjust as needed
+	float rotationSpeedMer = 0.01f; 
 
 
 	float rotationAngleVen = 0.0f;
-	float rotationSpeedVen = 0.01f; // Adjust as needed
-
+	float rotationSpeedVen = 0.01f; 
 
 	float rotationAngleEar = 0.41f;
-	float rotationSpeedEar = 0.005f; // Adjust as needed
+	float rotationSpeedEar = 0.005f; 
 
 
-	float orbitSpeedVen = 0.00011f; // Speed of rotation
-	float orbitRadiusVen = 15.0f; // Distance from the first object
-	float orbitAngleVen = 0.0f; // Initial angle
+	float orbitSpeedVen = 0.00011f;
+	float orbitRadiusVen = 15.0f; 
+	float orbitAngleVen = 0.0f; 
 
-	float orbitSpeedEar = 0.00009f; // Speed of rotation
-	float orbitRadiusEar = 10.0f; // Distance from the first object
-	float orbitAngleEar = 0.0f; // Initial angle
+	float orbitSpeedEar = 0.00009f; 
+	float orbitRadiusEar = 10.0f; 
+	float orbitAngleEar = 0.0f; 
 
 	do {
 		// Clear the screen
@@ -202,7 +201,6 @@ int main(void)
 		rotationAngle += rotationSpeed;
 		if (rotationAngle > 360.0f) rotationAngle -= 360.0f; // Loop back to 0 degrees
 
-		// Define the scale (if needed)
 		glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
 		// Create a model matrix, apply scaling and then rotation
@@ -220,7 +218,6 @@ int main(void)
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-		// ... setup for UVs of first sphere if different
 		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -234,22 +231,19 @@ int main(void)
 		glBindTexture(GL_TEXTURE_2D, TextureMer); // Bind the second texture
 		glUniform1i(TextureID, 0);
 
-		glm::vec3 scale2 = glm::vec3(0.15f, 0.15f, 0.15f); // Scale factor for the second object
+		glm::vec3 scale2 = glm::vec3(0.15f, 0.15f, 0.15f); // Scale
 		glm::mat4 ModelMatrix2 = glm::scale(glm::mat4(1.0f), scale2);
 
-		// Translation for the second object to orbit around the first object
+		// Translation
 		ModelMatrix2 = glm::translate(ModelMatrix2, orbitPosition);
 
-		// Set the MVP matrix for the second object
+		// Set the MVP matrix 
 		glm::mat4 MVP2 = ProjectionMatrix * ViewMatrix * ModelMatrix2;
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP2[0][0]);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer2);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-		// ... setup for UVs of second sphere if different
-		// glBindBuffer, glEnableVertexAttribArray, glVertexAttribPointer
 
 		glDrawArrays(GL_TRIANGLES, 0, verticesMer.size());
 
@@ -264,26 +258,23 @@ int main(void)
 		glm::vec3 orbitPositionVen = glm::vec3(xVen, centerOfRotation.y, zVen);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, TextureVen); // Bind the second texture
+		glBindTexture(GL_TEXTURE_2D, TextureVen); // Bind the 3rd texture
 		glUniform1i(TextureID, 0);
 
 
 		glm::vec3 scaleVen = glm::vec3(0.25f, 0.25f, 0.25f); 
 		glm::mat4 ModelMatrixVen = glm::scale(glm::mat4(1.0f), scaleVen);
 
-		// Translation for the second object to orbit around the first object
+		// Translation 
 		ModelMatrixVen = glm::translate(ModelMatrixVen, orbitPositionVen);
 
-		// Set the MVP matrix for the second object
+		// Set the MVP matrix
 		glm::mat4 MVPVen = ProjectionMatrix * ViewMatrix * ModelMatrixVen;
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVPVen[0][0]);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbufferVen);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-		// ... setup for UVs of second sphere if different
-		// glBindBuffer, glEnableVertexAttribArray, glVertexAttribPointer
 
 		glDrawArrays(GL_TRIANGLES, 0, verticesVen.size());
 
@@ -301,7 +292,7 @@ int main(void)
 		glm::vec3 orbitPositionEar = glm::vec3(xEar, centerOfRotation.y, zEar);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, TextureEar); // Bind the second texture
+		glBindTexture(GL_TEXTURE_2D, TextureEar); // Bind the 4th texture
 		glUniform1i(TextureID, 0);
 
 		glm::vec3 scaleEar = glm::vec3(0.25f, 0.25f, 0.25f);
@@ -316,9 +307,6 @@ int main(void)
 		glBindBuffer(GL_ARRAY_BUFFER, vertexbufferEar);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-		// ... setup for UVs of second sphere if different
-		// glBindBuffer, glEnableVertexAttribArray, glVertexAttribPointer
 
 		glDrawArrays(GL_TRIANGLES, 0, verticesEar.size());
 
